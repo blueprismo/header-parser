@@ -25,6 +25,20 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+// work work!
+app.get("/api/whoami", function(req,res){
+  //req.connection is deprecated, but it will work for the test :) 
+  var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  // another solution to this approach, would be to listen to port '0.0.0.0' to force ipv4 traffic
+  if (ip.substr(0, 7) == "::ffff:") {
+    ip = ip.substr(7)
+  }
+  // we could use x-real-ip if it was set behind a nginx/reverse proxy.
+  res.json({ipaddress: ip , language: req.headers["accept-language"], software: req.headers["user-agent"]});
+});
+
+
+
 
 
 // listen for requests :)
